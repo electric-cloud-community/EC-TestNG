@@ -1,0 +1,213 @@
+# -*-Perl-*-
+
+# testng-RunTestNG.ntest -
+#
+# ECTestNG
+#
+# Copyright (c) 2005-2010 Electric Cloud, Inc.
+# All rights reserved
+
+use strict;
+use ECTest;
+use ECSelenium;
+
+ 
+# systemtests
+
+
+require "$::gTestFileDir/../../EC-TestNG/systemtest/testng-common.ntest";
+
+
+$::grunTestNGCreated = 0;
+$::gProjectImported = 0;
+#stores the result wheter the result of the procedure is success or error
+my $outcome = "";
+
+#stores the result wheter the result of the procedure is success or error
+
+sub importProject() {
+    assertOK($::N->import(
+                     { file =>"$::gTestFileDir/testngTests.xml",
+               path  => "/projects/testngTests",
+               force => 1
+             } ), "import runTestNGCommandLine");
+   
+    assertOK($::N->getProcedure("testngTests", "standardTestNGCommand"),"standardTestNGCommand procedure exists");
+    assertOK($::N->getProcedure("testngTests", "withReportDirectory"),"withReportDirectory procedure exists");
+    assertOK($::N->getProcedure("testngTests", "testngWithOption"),"testngWithOption procedure exists");
+    
+    
+   
+   
+    $::gProjectImported = 1;
+}
+
+
+
+sub doSetup() {
+
+    if(! $::gProjectImported) {
+        importProject();
+    }
+
+   
+}
+ 
+
+
+#standardTestNGCommand
+ 
+ ntest "standardTestNGCommand", {}, sub {
+      doSetup();
+      # run test job
+     
+         my $xpath = $::N->runProcedure("testngTests", 
+                 { procedureName => "standardTestNGCommand",
+                 pollInterval  => '1',
+                 timeout => 600,
+                      actualParameter => [
+                     
+                     ]
+          });
+# make sure it finished
+             my $jobId = 0;
+             my $status = "";
+             
+             assertOK($xpath, "runProcedure with errors");
+             if ($xpath) {
+                 $jobId  = $xpath->findvalue("//jobId");
+                 $status = $xpath->findvalue("//status");
+                 $outcome = $xpath->findvalue("//outcome");
+         
+                 assertTrue($jobId && $jobId ne "",'valid job id');
+                 assertEq('completed',$status,"job $jobId complete");
+         
+                 #abort if job did not finish
+                 if ($status ne "completed") {
+                     assertOK($::N->abortJob($jobId, {force => 1}));
+                 }
+             }
+ 
+     # get the job details
+     $xpath = $::N->getJobDetails($jobId);
+ 
+     # write the job details to a file in the test directory
+     writeFile("$::gCurrentTestDir/jobDetails.log","====start Job Details====\n$xpath->{_xml}\n\n====end job details===\n\n");
+ 
+     # get the value of the testngCommandLine property
+     my $cmd = $xpath->findvalue("//property[propertyName='testngCommandLine']/value");
+ 
+ 
+     # get the value of the testngWorkingDir property
+     my $dir = $xpath->findvalue("//property[propertyName='workingdirectory']/value");
+ 
+     # make sure the $cmd and $dir are what was expected
+     assertEq('java -ea -classpath ".;C:\testng-5.14.6\testng-5.14.6.jar;src/" com.beust.testng.TestNG testng.xml', $cmd, "correct testng command");
+     assertEq('C:\testngExample1', $dir, "testng working directory");
+  };
+
+  
+
+  
+ # testngWithOption
+
+ ntest "testngWithOption", {}, sub {
+      doSetup();
+      # run test job
+     
+         my $xpath = $::N->runProcedure("testngTests", 
+                 { procedureName => "testngWithOption",
+                 pollInterval  => '1',
+                 timeout => 600,
+                      actualParameter => [
+                     
+                     ]
+          });
+# make sure it finished
+             my $jobId = 0;
+             my $status = "";
+             
+             assertOK($xpath, "runProcedure with errors");
+             if ($xpath) {
+                 $jobId  = $xpath->findvalue("//jobId");
+                 $status = $xpath->findvalue("//status");
+                 $outcome = $xpath->findvalue("//outcome");
+         
+                 assertTrue($jobId && $jobId ne "",'valid job id');
+                 assertEq('completed',$status,"job $jobId complete");
+         
+                 #abort if job did not finish
+                 if ($status ne "completed") {
+                     assertOK($::N->abortJob($jobId, {force => 1}));
+                 }
+             }
+ 
+     # get the job details
+     $xpath = $::N->getJobDetails($jobId);
+ 
+     # write the job details to a file in the test directory
+     writeFile("$::gCurrentTestDir/jobDetails.log","====start Job Details====\n$xpath->{_xml}\n\n====end job details===\n\n");
+ 
+     # get the value of the testngCommandLine property
+     my $cmd = $xpath->findvalue("//property[propertyName='testngCommandLine']/value");
+ 
+ 
+     # get the value of the testngWorkingDir property
+     my $dir = $xpath->findvalue("//property[propertyName='workingdirectory']/value");
+ 
+     # make sure the $cmd and $dir are what was expected
+     assertEq('java -ea -classpath ".;C:\testng-5.14.6\testng-5.14.6.jar;src/" com.beust.testng.TestNG -groups windows,linux testng.xml', $cmd, "correct testng command");
+     assertEq('C:\testngExample1', $dir, "testng working directory");
+     
+  };
+ # withReportDirectory
+ 
+  ntest "withReportDirectory", {}, sub {
+      doSetup();
+      # run test job
+     
+         my $xpath = $::N->runProcedure("testngTests", 
+                 { procedureName => "withReportDirectory",
+                 pollInterval  => '1',
+                 timeout => 600,
+                      actualParameter => [
+                     
+                     ]
+          });
+# make sure it finished
+             my $jobId = 0;
+             my $status = "";
+             
+             assertOK($xpath, "runProcedure with errors");
+             if ($xpath) {
+                 $jobId  = $xpath->findvalue("//jobId");
+                 $status = $xpath->findvalue("//status");
+                 $outcome = $xpath->findvalue("//outcome");
+         
+                 assertTrue($jobId && $jobId ne "",'valid job id');
+                 assertEq('completed',$status,"job $jobId complete");
+         
+                 #abort if job did not finish
+                 if ($status ne "completed") {
+                     assertOK($::N->abortJob($jobId, {force => 1}));
+                 }
+             }
+ 
+     # get the job details
+     $xpath = $::N->getJobDetails($jobId);
+ 
+     # write the job details to a file in the test directory
+     writeFile("$::gCurrentTestDir/jobDetails.log","====start Job Details====\n$xpath->{_xml}\n\n====end job details===\n\n");
+ 
+     # get the value of the testngCommandLine property
+     my $cmd = $xpath->findvalue("//property[propertyName='testngCommandLine']/value");
+ 
+ 
+     # get the value of the testngWorkingDir property
+     my $dir = $xpath->findvalue("//property[propertyName='workingdirectory']/value");
+ 
+     # make sure the $cmd and $dir are what was expected
+     assertEq('java -ea -classpath ".;C:\testng-5.14.6\testng-5.14.6.jar;src/" com.beust.testng.TestNG -d "reports" testng.xml', $cmd, "testng command line");
+     assertEq('C:\testngExample1', $dir, "testng working directory");
+     
+  };

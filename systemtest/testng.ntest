@@ -1,0 +1,36 @@
+# -*-Perl-*-
+
+# testn.ntest -
+#
+# Exercise basic components of EC-TestNG plugin
+#
+# Copyright (c) 2005-2010 Electric Cloud, Inc.
+# All rights reserved
+
+use strict;
+use warnings;
+use ECTest;
+
+# read in setup and tests that are common to all EC-TestNG plugin archives
+# system tests
+
+
+
+use strict;
+require "$::gTestFileDir/../../EC-TestNG/systemtest/testng-common.ntest";
+
+
+
+ntest "check-runTestNG-present", {}, sub {
+    # Check that the plugin contains required components
+    my $xpath = $::N->getSteps("$::gPlugin_name","runTestNG");
+    assertOK($xpath,"get steps");
+    assertEq("createTestNGCommandLine", $xpath->findvalue("//step[1]/stepName"), "step 1: createTestNGCommandLine");
+    assertEq("runTestNGCommandLine", $xpath->findvalue("//step[2]/stepName"), "step 2: runTestNGCommandLine");
+
+};
+
+
+
+
+

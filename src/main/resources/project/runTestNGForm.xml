@@ -1,0 +1,37 @@
+	<editor>
+		<help>/commander/pages/@PLUGIN_NAME@/@PLUGIN_KEY@_help?s=Administration&amp;ss=Plugins#runTestNG
+		</help> 
+       <formElement>
+            <type>entry</type>
+            <label>Directory</label>
+            <property>workingdirectory</property>
+            <documentation>Provide the directory where the testng.xml file is located.</documentation>
+            <required>1</required>
+        </formElement>
+        <formElement>
+            <type>entry</type>
+            <label>TestNG.xml File(s)</label>
+            <property>testngFile</property>
+            <documentation>Provide the Xml or xmls files containing the tests to execute. </documentation>
+            <required>1</required>
+        </formElement>
+         <formElement>
+            <type>entry</type>
+            <label>Class Path</label>
+            <property>testngClasspath</property>
+            <documentation>Provide the directory where the testng.jar file is located. (This is the command-line '-classpath' option)</documentation>
+            <required>1</required>
+        </formElement>
+        <formElement>
+            <type>entry</type>
+            <label>Option(s)</label>
+            <property>options</property>
+            <documentation>Provide any options to execute with the testng command.</documentation>
+        </formElement>
+        <formElement>
+            <type>entry</type>
+			<label>Report directory</label>
+            <property>reportDirectory</property>
+            <documentation>Provide the directory where TestNG reports will be generated. (This is the command-line '-d' option)</documentation>
+        </formElement>
+    </editor>

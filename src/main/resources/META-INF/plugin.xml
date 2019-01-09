@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+    <key>@PLUGIN_KEY@</key>
+    <version>@PLUGIN_VERSION@</version>
+    <label>@PLUGIN_KEY@</label>
+    <category>Test</category>
+    <description>Integrates TestNG Test Tool into ElectricFlow</description>
+    <author>Electric Cloud</author>
+    <authorUrl>http://www.electric-cloud.com/support</authorUrl>
+    <commander-version min="3.6"/>
+    <help>EC-TestNG_help.xml</help>
+   <components>
+        <component name="configure">
+            <javascript>war/com.electriccloud.commander.plugins.TestNG.configure/com.electriccloud.commander.plugins.EC_TestNG.configure.nocache.js</javascript>
+        </component>
+    </components>
+</plugin>
